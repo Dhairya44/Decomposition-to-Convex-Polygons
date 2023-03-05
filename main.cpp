@@ -97,14 +97,13 @@ class DCEL{
     void traverseFace(){
         cout<<faces.size()<<endl;
         for(int i = 0;i<faces.size();i++){
-            cout<<"Face "<<i+1<<endl;
+            cout<<faces[i]->interComponent.size()<<endl;
             HalfEdge *start = faces[i]->interComponent[0];
             HalfEdge *e = start;
             do {
-                cout<<e->org->ind<<endl;
+                cout<<e->org->x<<" "<<e->org->y<<endl;
                 e = e->next;
             } while (e != start);
-            cout<<endl<<endl;
         }
     }
 
@@ -270,9 +269,6 @@ void solve(DCEL &dcel){
 
         if(L[L.size()-1]!=v2){
             P = makeConvex(L, dcel);
-            for(auto &x: P)
-                cout<<x->x<<","<<x->y<<" ";
-            cout<<endl;
             n = n - L.size() + 2;
         }
         m = m+1;
@@ -282,6 +278,7 @@ void solve(DCEL &dcel){
 int main(){
     DCEL dcel;
     freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w+", stdout);
     int n;
     cin>>n;
     vector<pair<double, double>> points;
@@ -290,6 +287,10 @@ int main(){
         cin>>x>>y;
         points.push_back({x, y});
     }
+
+    //Reverse if points are in counter clockwise order
+    // reverse(points.begin(), points.end());
+    
     dcel.createPolygon(points);
     solve(dcel);
     dcel.traverseFace();
