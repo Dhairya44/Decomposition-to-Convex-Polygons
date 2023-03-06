@@ -1,4 +1,6 @@
 #include<bits/stdc++.h>
+#include<stdio.h>
+#include<unistd.h>
 using namespace std;
 
 struct Vertex;
@@ -123,8 +125,7 @@ bool angle(Vertex* a, Vertex* b,Vertex* c){
     double y1 = a->y - b->y;
     double x2 = c->x - b->x;
     double y2 = c->y - b->y;
-    double cross = x1*y2 - x2*y1;
-    return cross >= 0;
+    return (x1*y2 - x2*y1) >= 0;
 }
 
 vector<Vertex*> findLPVS(vector<Vertex*> &L, vector<Vertex*> &P){
@@ -163,7 +164,7 @@ bool checkIfInside(vector<Vertex*>L, Vertex *v){
     Vertex *P1 = L[0], *P2 = L[L.size()-1];
     double slope = (P2->y - P1->y)/(P2->x - P1->x);
 
-    bool a1 =  v->y >= slope*(v->x-P1->x) + P1->y;
+    bool a1 =  v->y > slope*(v->x-P1->x) + P1->y;
     bool a2 = L[1]->y > slope*(L[1]->x-P1->x) + P1->y;
     return !(a1 ^ a2);
 }
@@ -238,7 +239,7 @@ void solve(DCEL &dcel){
             i = i+1;
             v3 = v3->incidentEdge->dest;
         }
-        
+    
         if(L.size()!=P.size()){
             vector<Vertex*> lpvs = findLPVS(L, P);
             while(lpvs.size()>0){
@@ -271,6 +272,7 @@ void solve(DCEL &dcel){
             P = makeConvex(L, dcel);
             n = n - L.size() + 2;
         }
+        
         m = m+1;
     }
 }
@@ -290,7 +292,6 @@ int main(){
 
     //Reverse if points are in counter clockwise order
     // reverse(points.begin(), points.end());
-    
     dcel.createPolygon(points);
     solve(dcel);
     dcel.traverseFace();

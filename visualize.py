@@ -42,6 +42,6 @@ for polygon in polygons:
     x.append(polygon[0][0])
     y.append(polygon[0][1])
     p2.plot(x,y)
-
+p2.legend([i+1 for i in range(len(polygons))])
 print("Total ploygons after decomposition: ", str(len(polygons)))
 plt.show()
