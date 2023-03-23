@@ -45,11 +45,14 @@ struct HalfEdge{
     }
 };
 struct Face{
+    int id;
     vector<HalfEdge*> interComponent;
     Face(){
+        id = -1;
         interComponent.clear();
     }
-    Face(vector<HalfEdge*> interComponent){
+    Face(int id, vector<HalfEdge*> interComponent){
+        this->id = id;
         this->interComponent = interComponent;
     }
 };
@@ -59,6 +62,7 @@ class DCEL{
     vector<Face*> faces;
     vector<Vertex*> vertices;
     vector<HalfEdge*> edges;
+    vector<HalfEdge*> diag;
 
     void createPolygon(vector<pair<double, double>> &points){
         int n = points.size();
@@ -86,6 +90,7 @@ class DCEL{
         }
 
         Face *orig = new Face();
+        orig->id = 1;
         HalfEdge *start = vertices[0]->incidentEdge;
         HalfEdge *e = start;
         do {
@@ -109,6 +114,15 @@ class DCEL{
         }
     }
 
+    vector<pair<Vertex*, Vertex*>> findLLE(){
+        vector<pair<Vertex*, Vertex*>> lle;
+        for(int i = 0;i<faces.size()-1;i++){
+            HalfEdge *start = faces[i]->interComponent[0];
+            lle.push_back({start->prev->org, start->org});
+        }
+        return lle;
+    }
+
     void traverse(){
         HalfEdge *start = vertices[0]->incidentEdge;
         HalfEdge *e = start;
@@ -116,6 +130,35 @@ class DCEL{
             cout<<e->org->x<<" "<<e->org->y<<endl;
             e = e->next;
         } while (e != start);
+    }
+
+    vector<pair<int, Vertex*>> LP(Vertex *v){
+        vector<pair<int, Vertex*>> lp;
+        for(int i = 0;i<faces.size();i++){
+            HalfEdge *start = faces[i]->interComponent[0];
+            HalfEdge *e = start;
+            do {
+                if(e->org == v && e->dest->ind - e->org->ind == 1){
+                    break;
+                }
+                if(e->org==v)
+                    lp.push_back({i+1, e->dest});
+                e = e->next;
+            } while (e != start);
+        }
+        return lp;
+    }
+
+    HalfEdge* findEdge(int face, Vertex *v){
+        HalfEdge *start = faces[face-1]->interComponent[0];
+        HalfEdge *e = start;
+        do {
+            if(e->org == v){
+                return e;
+            }
+            e = e->next;
+        } while (e != start);
+        return start;
     }
     
 };
@@ -160,13 +203,28 @@ vector<double> findRectangle(vector<Vertex*> &L){
     return {minX->x, minY->y, maxX->x, maxY->y};
 }
 
-bool checkIfInside(vector<Vertex*>L, Vertex *v){
-    Vertex *P1 = L[0], *P2 = L[L.size()-1];
-    double slope = (P2->y - P1->y)/(P2->x - P1->x);
+// bool checkIfInside(vector<Vertex*>L, Vertex *v){
+//     Vertex *P1 = L[0], *P2 = L[L.size()-1];
+//     double slope = (P2->y - P1->y)/(P2->x - P1->x);
 
-    bool a1 =  v->y > slope*(v->x-P1->x) + P1->y;
-    bool a2 = L[1]->y > slope*(L[1]->x-P1->x) + P1->y;
-    return !(a1 ^ a2);
+//     bool a1 =  v->y > slope*(v->x-P1->x) + P1->y;
+//     bool a2 = L[1]->y > slope*(L[1]->x-P1->x) + P1->y;
+//     return !(a1 ^ a2);
+// }
+
+bool checkIfInside(vector<Vertex*>L, Vertex *v){
+    bool flag = true;
+    int n = L.size();
+    for(int i = 0; i<n; i++){
+        Vertex *P1 = L[i], *P2 = L[(i+1+n)%(n)];
+        double slope = (P2->y - P1->y)/(P2->x - P1->x);
+
+        bool a1 =  v->y > slope*(v->x-P1->x) + P1->y;
+        bool a2 = L[(i+2+n)%n]->y > slope*(L[(i+2+n)%n]->x-P1->x) + P1->y;
+
+        flag &= !(a1 ^ a2);
+    }
+    return flag;
 }
 
 vector<Vertex*> makeConvex(vector<Vertex*> &L, DCEL &dcel){
@@ -176,6 +234,7 @@ vector<Vertex*> makeConvex(vector<Vertex*> &L, DCEL &dcel){
     }
     HalfEdge *e1 = new HalfEdge(); 
     HalfEdge *e2 = new HalfEdge();
+    int id = dcel.faces.back()->id;
     dcel.faces.pop_back();
 
     e1->org = v1;
@@ -215,10 +274,13 @@ vector<Vertex*> makeConvex(vector<Vertex*> &L, DCEL &dcel){
             e = e->next;
         } while (e != start);
 
+    f1->id = id;
+    f2->id = id+1;
     dcel.edges.push_back(e1);
     dcel.edges.push_back(e2);
     dcel.faces.push_back(f1);
     dcel.faces.push_back(f2);
+    dcel.diag.push_back(e1);
     return P;
 }
 
@@ -228,7 +290,7 @@ void solve(DCEL &dcel){
     vector<Vertex*> L;
     L.push_back(dcel.vertices[0]);
     int m = 1;
-        
+    
     while(n>3){
         Vertex *v1 = L[L.size()-1], *v2 = v1->incidentEdge->dest;
         L.clear();
@@ -239,7 +301,11 @@ void solve(DCEL &dcel){
             i = i+1;
             v3 = v3->incidentEdge->dest;
         }
-    
+        // cout<<v1->ind<<endl;
+        // for(auto x: L){
+        //     cout<<x->ind<<" ";
+        // }
+        // cout<<endl;
         if(L.size()!=P.size()){
             vector<Vertex*> lpvs = findLPVS(L, P);
             while(lpvs.size()>0){
@@ -267,14 +333,183 @@ void solve(DCEL &dcel){
                 }
             }
         }
-
+        // for(auto x: L)
+        //     cout<<x->ind<<" ";
+        // cout<<endl;
         if(L[L.size()-1]!=v2){
             P = makeConvex(L, dcel);
             n = n - L.size() + 2;
         }
-        
         m = m+1;
     }
+}
+
+void mergeDCEL(DCEL &dcel, vector<int> &lup, vector<HalfEdge*> &redEdges){
+    for(int i = 0; i<redEdges.size(); i++){
+        HalfEdge *e = redEdges[i];
+        HalfEdge *t = redEdges[i]->twin;
+        e->prev->next = t->next;
+        t->next->prev = e->prev;
+        e->next->prev = t->prev;
+        t->prev->next = e->next;
+        e->org->incidentEdge = t->next;
+        Face *f1 = new Face();
+        HalfEdge *start = t->next;
+        HalfEdge *e1 = start;
+            do {
+                f1->interComponent.push_back(e1);
+                e1->incidentFace = f1;
+                e1 = e1->next;
+            } while (e1 != start);
+        delete(e);
+        delete(t);
+        dcel.faces.push_back(f1);
+    }
+
+    vector<Face*> final;
+    map<int, int> m;
+    for(int i = 0; i<lup.size(); i++){
+        if(lup[i]==i){
+            final.push_back(dcel.faces[i]);
+        }else if(!m[lup[i]]){
+            m[lup[i]]++;
+            final.push_back(dcel.faces[lup[i]]);
+        }
+    }
+    // cout<<final.size()<<endl;
+    dcel.faces = final;
+}
+
+void mergeB(DCEL &dcel){
+    vector<HalfEdge*> diag = dcel.diag;
+    // for(auto &x: diag)
+    //     cout<<x->org->ind<<" "<<x->dest->ind<<" "<<x->incidentFace->id<<" "<<x->twin->incidentFace->id<<endl;
+    vector<bool> valid(dcel.faces.size(), true);
+    for(int i = 0; i<diag.size(); i++){
+        HalfEdge *alpha = diag[i];
+        HalfEdge *beta = alpha->twin;
+        Face *f1 = alpha->incidentFace, *f2 = beta->incidentFace;
+        Vertex *a2 = alpha->org, *b2 = alpha->dest;
+        Vertex *a1 = alpha->prev->org, *a3 = beta->next->dest;
+        Vertex *b1 = beta->prev->org, *b3 = alpha->next->dest;
+        // cout<<a1->ind<<" "<<a2->ind<<" "<<a3->ind<<endl;
+        // cout<<b1->ind<<" "<<b2->ind<<" "<<b3->ind<<endl<<endl;
+        if(angle(a1, a2, a3) && angle(b1, b2, b3)){
+            valid[f1->id-1] = false; valid[f2->id-1] = false;
+            valid.push_back(true);
+            Face *f3 = new Face();
+            f3->id = valid.size();
+
+            alpha->prev->next = beta->next;
+            beta->next->prev = alpha->prev;
+            alpha->next->prev = beta->prev;
+            beta->prev->next = alpha->next;
+            alpha->org->incidentEdge = beta->next;
+            HalfEdge *start = beta->next;
+            HalfEdge *e1 = start;
+                do {
+                    f3->interComponent.push_back(e1);
+                    e1->incidentFace = f3;
+                    e1 = e1->next;
+                } while (e1 != start);
+            delete(alpha);
+            delete(beta);
+            
+            dcel.faces.push_back(f3);
+        }
+    }
+    int cnt = 0;
+    for(auto x: valid)
+        if(x)
+            cnt++;
+    //     else
+    //         cout<<"invalid ";
+    // cout<<endl;
+    cout<<cnt<<endl;
+    for(int i = 0;i<dcel.faces.size();i++){
+        if(!valid[i])
+            continue;
+        cout<<dcel.faces[i]->interComponent.size()<<endl;
+        HalfEdge *start = dcel.faces[i]->interComponent[0];
+        HalfEdge *e = start;
+        do {
+            cout<<e->org->x<<" "<<e->org->y<<endl;
+            e = e->next;
+        } while (e != start);
+    }
+
+}
+
+void merge(DCEL &dcel){
+    int n = dcel.vertices.size();
+    int NP = dcel.faces.size();
+    int m = NP-1;
+    vector<bool> ldp(NP, true);
+    vector<int> lup(NP);
+    for(int i = 0; i<NP; i++){
+        lup[i] = i;
+    }
+    vector<pair<Vertex*, Vertex*>> lle = dcel.findLLE();
+    vector<HalfEdge*> redEdges;
+    for(int j = 0; j<m; j++){
+        Vertex *vs = lle[j].first, *vt = lle[j].second;
+        vector<pair<int, Vertex*>> lpvs = dcel.LP(vs), lpvt = dcel.LP(vt);
+        // cout<<vs->ind<<" "<<vt->ind<<endl;
+        // for(auto x: lpvs)
+        //     cout<<"("<<x.first<<", "<<x.second->ind<<") , ";
+        // cout<<endl;
+        // for(auto x: lpvt)
+        //     cout<<"("<<x.first<<", "<<x.second->ind<<") , ";
+        // cout<<endl<<endl;
+        bool isConvexVs = angle(dcel.vertices[(vs->ind-2 + n)%n], vs, dcel.vertices[(vs->ind)%n]);
+        bool isConvexVt = angle(dcel.vertices[(vt->ind-2 + n)%n], vt, dcel.vertices[(vt->ind)%n]);
+
+        if((lpvs.size()>=2 && lpvt.size()>=2) || (lpvs.size()>=2 && isConvexVt) || (lpvt.size()>=2 && isConvexVs) || (isConvexVs && isConvexVt)){
+            Vertex *j2 = vt;
+            Vertex *i2 = vs;
+            HalfEdge *alpha = dcel.findEdge(j+1, j2);
+            HalfEdge *beta = dcel.findEdge(j+1, i2);
+            Vertex *j3 = alpha->dest;
+            Vertex *i1 = beta->prev->org;
+            int u;
+            for(auto x: lpvt){
+                if(x.second==vs){
+                    u = x.first;
+                    break;
+                }
+            }
+            alpha = dcel.findEdge(u, vt);
+            beta = dcel.findEdge(u, vs);
+            Vertex *j1 = alpha->prev->org;
+            Vertex *i3 = beta->dest;
+            // cout<<u<<endl;
+            // cout<<j1->ind<<" "<<j2->ind<<" "<<j3->ind<<" "<<i1->ind<<" "<<i2->ind<<" "<<i3->ind<<endl;
+            // cout<<endl;
+            if(angle(j1, j2, j3) && angle(i1, i2, i3)){
+                // cout<<"Merged "<<j+1<<" and "<<u<<endl;
+                redEdges.push_back(alpha);
+                NP = NP+1;
+                ldp[j] = false;
+                ldp[u-1] = false;
+                ldp.push_back(true);
+                for(int h = 0; h<NP-1; h++){
+                    if(lup[h] == lup[j] || lup[h] == lup[u-1])
+                        lup[h] = NP-1;
+                }
+                lup[j] = NP-1;
+                lup[u-1] = NP-1;
+                for(int h = 0; h<NP-1; h++){
+                    if(lup[h]==j || lup[h]==u-1)
+                        lup[h] = NP-1;
+                }
+            }
+        }
+        // cout<<endl;
+    }
+    // for(int i = 0; i<lup.size(); i++){
+    //     cout<<i+1<<" "<<lup[i]+1<<endl;
+    // }
+    mergeDCEL(dcel, lup, redEdges);
 }
 
 int main(){
@@ -295,5 +530,8 @@ int main(){
     dcel.createPolygon(points);
     solve(dcel);
     dcel.traverseFace();
+    // merge(dcel);
+    mergeB(dcel);
+    // dcel.traverseFace();
     return 0;
 }
