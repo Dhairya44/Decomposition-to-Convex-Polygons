@@ -306,9 +306,9 @@ void solve(DCEL &dcel){
         //     cout<<x->ind<<" ";
         // }
         // cout<<endl;
-        if(L.size()!=P.size()){
+        if(L.size()!=P.size() && L.size() >2){
             vector<Vertex*> lpvs = findLPVS(L, P);
-            while(lpvs.size()>0){
+            while(lpvs.size()>0 && L.size() >2){
                 vector<double> rec = findRectangle(L);
                 double x1 = rec[0], y1 = rec[1], x2 = rec[2], y2 = rec[3];
                 bool backwards = false;
@@ -336,7 +336,7 @@ void solve(DCEL &dcel){
         // for(auto x: L)
         //     cout<<x->ind<<" ";
         // cout<<endl;
-        if(L[L.size()-1]!=v2){
+        if(L.size() > 2 && L[L.size()-1]!=v2){
             P = makeConvex(L, dcel);
             n = n - L.size() + 2;
         }

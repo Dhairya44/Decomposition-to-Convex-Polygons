@@ -17,7 +17,7 @@ y = []
 for i in range(len(polygon)):
     x.append(polygon[i][0])
     y.append(polygon[i][1])
-    p1.text(polygon[i][0], polygon[i][1], str(i+1), fontsize=10)
+    # p1.text(polygon[i][0], polygon[i][1], str(i+1), fontsize=10)
     # p2.text(polygon[i][0], polygon[i][1], str(i+1), fontsize=10)
 x.append(polygon[0][0])
 y.append(polygon[0][1])
