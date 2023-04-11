@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt 
+import numpy as np
 
 fig, (p1, p2, p3) = plt.subplots(1, 3, sharey = True)
 fig.set_figheight(5)
@@ -6,9 +7,9 @@ fig.set_figwidth(15)
 fig.suptitle("Polygon Decomposition")
 
 f = open("input.txt", "r")
-n = int(f.readline())
+m = int(f.readline())
 polygon = []
-for i in range(n):
+for i in range(m):
     polygon.append([float(x) for x in f.readline().split()])
 f.close()
 # polygon.reverse()
@@ -68,4 +69,12 @@ for polygon in polygons:
 s = "Convex Polygons after Merging: " + str(len(polygons))
 p3.title.set_text(s)
 # p3.legend([i+1 for i in range(len(polygons))])
+
+
+t1 = f.readline()
+t2 = f.readline()
+s = str(m)+" "+ t1[0:-1] + " " + t2
+with open("time.txt", "a") as f:
+    f.write(s)
+
 plt.show()

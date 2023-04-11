@@ -1,5 +1,6 @@
 import os
 import sys
-os.system('python3 PolygonGenerator.py')
+# os.system('python PolygonGenerator.py')
+os.system('g++ main.cpp -o main')
 os.system('main.exe')
-os.system('python3 visualize.py')
+os.system('python visualize.py')

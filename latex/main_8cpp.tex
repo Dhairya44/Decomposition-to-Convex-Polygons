@@ -1,0 +1,236 @@
+\hypertarget{main_8cpp}{}\doxysection{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.cpp@{main.cpp}}
+
+
+Contains the main function.  
+
+
+{\ttfamily \#include $<$bits/stdc++.\+h$>$}\newline
+{\ttfamily \#include $<$ctime$>$}\newline
+{\ttfamily \#include \char`\"{}Header/\+DCEL.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header/\+Edges.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header/\+Vertices.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Header/\+Faces.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{main_8cpp_a7b8e49fd537be6c7383d804672915205}{angle}} (Vertex $\ast$a, Vertex $\ast$b, Vertex $\ast$c)
+\begin{DoxyCompactList}\small\item\em Used to find the angle between the vectors (a,b) and (b,c). \end{DoxyCompactList}\item 
+vector$<$ Vertex $\ast$ $>$ \mbox{\hyperlink{main_8cpp_acbb0f6f0271735a1040f8ae48441452b}{find\+LPVS}} (vector$<$ Vertex $\ast$ $>$ \&L, vector$<$ Vertex $\ast$ $>$ \&P)
+\begin{DoxyCompactList}\small\item\em Used to find the LPVS as mentioned in the paper. \end{DoxyCompactList}\item 
+vector$<$ double $>$ \mbox{\hyperlink{main_8cpp_aa63761812b018b08d2b96befe2c85845}{find\+Rectangle}} (vector$<$ Vertex $\ast$ $>$ \&L)
+\begin{DoxyCompactList}\small\item\em Used to find the rectangle as mentioned in the paper. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{main_8cpp_ac8cd9a322385e57bdb5c0b30a647fabd}{check\+If\+Inside}} (vector$<$ Vertex $\ast$ $>$ L, Vertex $\ast$v)
+\begin{DoxyCompactList}\small\item\em Used to check if a vertex is inside the polygon. \end{DoxyCompactList}\item 
+vector$<$ Vertex $\ast$ $>$ \mbox{\hyperlink{main_8cpp_a308376373e92f037c442bf5a05f45db8}{make\+Convex}} (vector$<$ Vertex $\ast$ $>$ \&L, \mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&dcel)
+\begin{DoxyCompactList}\small\item\em Used to return a convex polygon given L and dcel. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a262894a2f51d9e89d223a74b1124fbbd}{solve}} (\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&dcel)
+\begin{DoxyCompactList}\small\item\em This is the main function mentioned as MP1 algorithm in the paper. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_ab068c7b5232e1ffacaba9dd40aa376ee}{merge\+DCEL}} (\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&dcel, vector$<$ int $>$ \&lup, vector$<$ Half\+Edge $\ast$ $>$ \&red\+Edges)
+\begin{DoxyCompactList}\small\item\em This function merges the \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon with the \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the rectangle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a9decff0ea27c25b72ef0a9fa69f62aa4}{merge}} (\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&dcel)
+\begin{DoxyCompactList}\small\item\em This function merges the components of the polygon. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_ade8e7e13d426710698e11d321df521f4}{mergeB}} (\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&dcel)
+\begin{DoxyCompactList}\small\item\em This function merges the components of the polygon. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_a51af30a60f9f02777c6396b8247e356f}{main}} ()
+\begin{DoxyCompactList}\small\item\em The main function of the program.\+This function reads the input from the input.\+txt file and writes the output to the output.\+txt file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_ad6371d5199e4c922989d11f6be6e4fda}\label{main_8cpp_ad6371d5199e4c922989d11f6be6e4fda}} 
+double {\bfseries algo\+Time}
+\item 
+\mbox{\Hypertarget{main_8cpp_a12af8e733da2a3f5f5779c9391eaf73a}\label{main_8cpp_a12af8e733da2a3f5f5779c9391eaf73a}} 
+double {\bfseries merge\+Time}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains the main function. 
+
+
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ 
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ 
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ 
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a7b8e49fd537be6c7383d804672915205}\label{main_8cpp_a7b8e49fd537be6c7383d804672915205}} 
+\index{main.cpp@{main.cpp}!angle@{angle}}
+\index{angle@{angle}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{angle()}{angle()}}
+{\footnotesize\ttfamily bool angle (\begin{DoxyParamCaption}\item[{Vertex $\ast$}]{a,  }\item[{Vertex $\ast$}]{b,  }\item[{Vertex $\ast$}]{c }\end{DoxyParamCaption})}
+
+
+
+Used to find the angle between the vectors (a,b) and (b,c). 
+
+fn angle 
+\begin{DoxyParams}{Parameters}
+{\em a} & The first vertex. \\
+\hline
+{\em b} & The second vertex. \\
+\hline
+{\em c} & The third vertex. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ac8cd9a322385e57bdb5c0b30a647fabd}\label{main_8cpp_ac8cd9a322385e57bdb5c0b30a647fabd}} 
+\index{main.cpp@{main.cpp}!checkIfInside@{checkIfInside}}
+\index{checkIfInside@{checkIfInside}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{checkIfInside()}{checkIfInside()}}
+{\footnotesize\ttfamily bool check\+If\+Inside (\begin{DoxyParamCaption}\item[{vector$<$ Vertex $\ast$ $>$}]{L,  }\item[{Vertex $\ast$}]{v }\end{DoxyParamCaption})}
+
+
+
+Used to check if a vertex is inside the polygon. 
+
+fn check\+If\+Inside 
+\begin{DoxyParams}{Parameters}
+{\em L} & The list of vertices of the polygon currently in the list. \\
+\hline
+{\em v} & The vertex to be checked. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_acbb0f6f0271735a1040f8ae48441452b}\label{main_8cpp_acbb0f6f0271735a1040f8ae48441452b}} 
+\index{main.cpp@{main.cpp}!findLPVS@{findLPVS}}
+\index{findLPVS@{findLPVS}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{findLPVS()}{findLPVS()}}
+{\footnotesize\ttfamily vector$<$ Vertex $\ast$ $>$ find\+LPVS (\begin{DoxyParamCaption}\item[{vector$<$ Vertex $\ast$ $>$ \&}]{L,  }\item[{vector$<$ Vertex $\ast$ $>$ \&}]{P }\end{DoxyParamCaption})}
+
+
+
+Used to find the LPVS as mentioned in the paper. 
+
+fn find\+LPVS 
+\begin{DoxyParams}{Parameters}
+{\em L} & The list of vertices of the polygon currently in the list. \\
+\hline
+{\em P} & The list of vertices of the polygon. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_aa63761812b018b08d2b96befe2c85845}\label{main_8cpp_aa63761812b018b08d2b96befe2c85845}} 
+\index{main.cpp@{main.cpp}!findRectangle@{findRectangle}}
+\index{findRectangle@{findRectangle}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{findRectangle()}{findRectangle()}}
+{\footnotesize\ttfamily vector$<$ double $>$ find\+Rectangle (\begin{DoxyParamCaption}\item[{vector$<$ Vertex $\ast$ $>$ \&}]{L }\end{DoxyParamCaption})}
+
+
+
+Used to find the rectangle as mentioned in the paper. 
+
+fn find\+Rectangle 
+\begin{DoxyParams}{Parameters}
+{\em L} & The list of vertices of the polygon currently in the list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a51af30a60f9f02777c6396b8247e356f}\label{main_8cpp_a51af30a60f9f02777c6396b8247e356f}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The main function of the program.\+This function reads the input from the input.\+txt file and writes the output to the output.\+txt file. 
+
+The input file should contain the number of vertices of the polygon and the coordinates of the vertices.
+
+The output file contains the number of components of the polygon and the coordinates of the vertices of each component.
+
+The time taken by the algorithm is also printed in the output file.
+
+The algorithm is run on the polygon in clockwise order.
+
+It takes the input and creates the \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon.
+
+It then calls the solve function to create subpolygons.
+
+The solve function calls the merge functions to merge the subpolygons. \mbox{\Hypertarget{main_8cpp_a308376373e92f037c442bf5a05f45db8}\label{main_8cpp_a308376373e92f037c442bf5a05f45db8}} 
+\index{main.cpp@{main.cpp}!makeConvex@{makeConvex}}
+\index{makeConvex@{makeConvex}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{makeConvex()}{makeConvex()}}
+{\footnotesize\ttfamily vector$<$ Vertex $\ast$ $>$ make\+Convex (\begin{DoxyParamCaption}\item[{vector$<$ Vertex $\ast$ $>$ \&}]{L,  }\item[{\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&}]{dcel }\end{DoxyParamCaption})}
+
+
+
+Used to return a convex polygon given L and dcel. 
+
+fn make\+Convex 
+\begin{DoxyParams}{Parameters}
+{\em L} & The list of vertices of the polygon currently in the list. \\
+\hline
+{\em dcel} & The \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a9decff0ea27c25b72ef0a9fa69f62aa4}\label{main_8cpp_a9decff0ea27c25b72ef0a9fa69f62aa4}} 
+\index{main.cpp@{main.cpp}!merge@{merge}}
+\index{merge@{merge}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{merge()}{merge()}}
+{\footnotesize\ttfamily void merge (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&}]{dcel }\end{DoxyParamCaption})}
+
+
+
+This function merges the components of the polygon. 
+
+fn merge 
+\begin{DoxyParams}{Parameters}
+{\em dcel} & The \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ade8e7e13d426710698e11d321df521f4}\label{main_8cpp_ade8e7e13d426710698e11d321df521f4}} 
+\index{main.cpp@{main.cpp}!mergeB@{mergeB}}
+\index{mergeB@{mergeB}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{mergeB()}{mergeB()}}
+{\footnotesize\ttfamily void mergeB (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&}]{dcel }\end{DoxyParamCaption})}
+
+
+
+This function merges the components of the polygon. 
+
+fn mergeB 
+\begin{DoxyParams}{Parameters}
+{\em dcel} & The \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ab068c7b5232e1ffacaba9dd40aa376ee}\label{main_8cpp_ab068c7b5232e1ffacaba9dd40aa376ee}} 
+\index{main.cpp@{main.cpp}!mergeDCEL@{mergeDCEL}}
+\index{mergeDCEL@{mergeDCEL}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{mergeDCEL()}{mergeDCEL()}}
+{\footnotesize\ttfamily void merge\+DCEL (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&}]{dcel,  }\item[{vector$<$ int $>$ \&}]{lup,  }\item[{vector$<$ Half\+Edge $\ast$ $>$ \&}]{red\+Edges }\end{DoxyParamCaption})}
+
+
+
+This function merges the \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon with the \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the rectangle. 
+
+fn merge\+DCEL 
+\begin{DoxyParams}{Parameters}
+{\em dcel} & The \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_a262894a2f51d9e89d223a74b1124fbbd}\label{main_8cpp_a262894a2f51d9e89d223a74b1124fbbd}} 
+\index{main.cpp@{main.cpp}!solve@{solve}}
+\index{solve@{solve}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily void solve (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_d_c_e_l}{DCEL}} \&}]{dcel }\end{DoxyParamCaption})}
+
+
+
+This is the main function mentioned as MP1 algorithm in the paper. 
+
+fn solve 
+\begin{DoxyParams}{Parameters}
+{\em dcel} & The \mbox{\hyperlink{class_d_c_e_l}{DCEL}} of the polygon. \\
+\hline
+\end{DoxyParams}

@@ -33,7 +33,8 @@ def plot_polygon(polygon, out_file_name):
 # take input in numpoints
 # num_points = int(input())
 # num_points = random(3, 100)
-num_points = random.randint(1000, 3000)
+# num_points = random.randint(100, 300)
+num_points = 20
 # num_points = random.randrange(3, 100)
 polygon = random_polygon(num_points)
 # reverse the point of polygon
